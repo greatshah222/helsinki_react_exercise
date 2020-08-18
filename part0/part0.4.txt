@@ -1,6 +1,6 @@
 browser->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note( user input is sent via the body)
 note over server:
-The user form input is received by the server using req.body which then creates a new note add and adds to the array of notes
+The user form input is received by the server using req.body which then creates a new note  and adds to  the array of notes
 end note
 server-->browser: HTTP status code 302 (Server informs the browser to make a  new HTTP( get) request  to the address defined in the header's Location - which is  /notes)
 browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/notes
