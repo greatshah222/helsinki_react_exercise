@@ -1,0 +1,5 @@
+browser->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+note over server:
+The user form input is received by the server using req.body which then creates a new note add and adds to the array of notes.(Also  the Content-type(header) is sent via the request which in our case is json(neeeded for the correct parsing of the data)
+end note
+server-->browser: HTTP status 201(created successfully. No futher HTTP request needs to be sent by the browser)
