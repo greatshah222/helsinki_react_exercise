@@ -1,0 +1,1 @@
+{"version":3,"sources":["Notification.module.css"],"names":[],"mappings":"AAAA,2BACE,kBAAqB,CACrB,cAAe,CACf,kBAAmB,CACnB,iBAAkB,CAClB,YAAa,CACb,kBACF","file":"main.b96ab6f0.chunk.css","sourcesContent":[".error {\n  background: lightgrey;\n  font-size: 20px;\n  border-style: solid;\n  border-radius: 5px;\n  padding: 10px;\n  margin-bottom: 10px;\n}\n"]}

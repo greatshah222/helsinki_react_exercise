@@ -1,9 +1,11 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:5001/persons';
+const baseUrl = 'https://shielded-escarpment-66552.herokuapp.com/api/persons';
 
 export const getAllNotes = async () => {
-  return await axios.get(baseUrl);
+  const res = await axios.get(baseUrl);
+  console.log(res);
+  return res.data;
 };
 
 export const createNote = async (data) => {
@@ -11,7 +13,8 @@ export const createNote = async (data) => {
 };
 export const updateNote = async (id, data) => {
   try {
-    return await axios.patch(`${baseUrl}/${id}`, data);
+    const res = await axios.patch(`${baseUrl}/${id}`, data);
+    return res.data;
   } catch (error) {
     throw error;
   }
