@@ -24,8 +24,7 @@ const App = () => {
   useEffect(() => {
     const fetchData = async () => {
       const res = await getAllNotes();
-      console.log(res.data);
-      setPersons(res.data);
+      setPersons(res.doc);
     };
     fetchData();
   }, []);
@@ -43,32 +42,43 @@ const App = () => {
         `${newName} is already addded to phonebook,DO you want to replace the old number with a new one`
       );
       if (confirm) {
-        const singlePerson = persons.filter((el) => el.name === newName);
-        console.log(singlePerson);
-        const id = singlePerson[0].id;
-        console.log(id);
+        try {
+          const singlePerson = persons.filter((el) => el.name === newName);
+          // console.log(singlePerson);
+          const id = singlePerson[0]._id;
+          // console.log(id);
 
-        await updateNote(id, data);
-        const res2 = await getAllNotes();
+          const res = await updateNote(id, data);
+          const newPerson = persons.filter((el) => el._id !== id);
+          setPersons([...newPerson, res.doc]);
 
-        await setPersons(res2.data);
-        setMessage(`Changed number of ${newName} successfully`);
+          setMessage(`Changed number of ${newName} successfully`);
+          setMessageColor('green');
+
+          setNewName('');
+          setNewphoneNumber('');
+        } catch (error) {
+          // console.log(error);
+          setMessage(error);
+          setMessageColor('red');
+        }
+      }
+    } else {
+      try {
+        const res = await createNote(data);
+        console.log(res.data.data.doc);
+        await setPersons([...persons, res.data.data.doc]);
+
+        setMessage(` Added ${newName} successfully`);
         setMessageColor('green');
 
         setNewName('');
         setNewphoneNumber('');
+      } catch (error) {
+        // console.log(error);
+        setMessage(error);
+        setMessageColor('red');
       }
-    } else {
-      const res = await createNote(data);
-      console.log(res);
-      const res2 = await getAllNotes();
-
-      await setPersons(res2.data);
-      setMessage(` Added ${newName} successfully`);
-      setMessageColor('green');
-
-      setNewName('');
-      setNewphoneNumber('');
     }
   };
   if (message) {
@@ -79,15 +89,17 @@ const App = () => {
   // delete
 
   const personHandleDelete = async (id, name) => {
-    console.log(id);
+    // console.log(id);
     const confirm = window.confirm(`Do you really want to Delete ${name} ?`);
     // confirm will give true or false , true if pressed ok
     if (confirm) {
       try {
         const res = await deleteNote(id);
         console.log(res);
-        const newPersons = persons.filter((el) => el.id !== id);
+        const newPersons = persons.filter((el) => el._id !== id);
         await setPersons(newPersons);
+        setMessageColor('green');
+        setMessage(`Successfully deleted`);
       } catch (error) {
         setMessageColor('red');
         setMessage(

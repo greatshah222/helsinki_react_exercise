@@ -7,7 +7,7 @@ function Persons({ persons, filterValue, personHandleDelete }) {
           {el.name} : {el.phoneNumber}
           <button
             style={{ marginLeft: '20px' }}
-            onClick={() => personHandleDelete(el.id, el.name)}
+            onClick={() => personHandleDelete(el._id, el.name)}
           >
             delete
           </button>
