@@ -5,8 +5,10 @@ const app = require('./app');
 
 dotenv.config({ path: './config.env' });
 
-const url = process.env.MONGODB_URI;
-
+let url = process.env.MONGODB_URI;
+if (process.env.NODE_ENV === 'test') {
+  url = process.env.TEST_MONGODB_URI;
+}
 try {
   mongoose
     .connect(url, {
@@ -24,6 +26,8 @@ try {
 
 const port = process.env.PORT || 9000;
 
-app.listen(port, () => {
-  console.log(`App running on Port ${port}`);
+const server = app.listen(port, async () => {
+  await console.log(`App running on Port ${port}`);
 });
+
+module.exports = server;
