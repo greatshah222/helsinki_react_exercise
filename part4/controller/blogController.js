@@ -13,9 +13,14 @@ exports.getAllBlogs = async (req, res) => {
   });
 };
 exports.createNewBlog = async (req, res) => {
-  const { title, url, author, likes } = req.body;
+  const { title, url, author, likes, testUserid } = req.body;
+
   console.log(req.user._id);
-  const userID = req.user._id;
+  let userID = req.user._id;
+
+  console.log(userID);
+  // for test purpose
+
   if (!title || !url) {
     return res.status(400).json({
       status: 'error',

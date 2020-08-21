@@ -15,7 +15,7 @@ exports.initialBlog = [
 ];
 exports.singleUser = {
   name: 'hello',
-  username: 'hello11',
+  username: 'hello1111',
   password: 'newpassword',
 };
 exports.singleInvalidUser = {
@@ -32,11 +32,13 @@ exports.withouttitle = {
   author: 'new author',
   likes: 10,
   url: 'https://bishalshah.ml/',
+  testUserid: '5f3f08e42be55a229a0d0a50',
 };
 exports.withoutLikeProperty = {
-  author: 'matti',
+  author: 'checking for post request by adding header ',
   title: 'new title',
   url: 'https://bishalshah.ml/',
+  testUserid: '5f3f08e42be55a229a0d0a50',
 };
 
 exports.nonExistingId = async () => {

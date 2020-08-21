@@ -33,26 +33,28 @@ describe('Creating Json types', () => {
 // we have put together all the create post by using describe method of jest
 
 describe('Creating new Blog post for testing purpose', () => {
-  test('exercise 4.10 creating new blog post ', async () => {
-    await api
-      .post('/api/blogs')
-      .send(newBlogPost)
-      .expect(200)
-      .expect('Content-Type', /application\/json/);
+  test('exercise 4.10  && 4.22 creating new blog post if token is not provided gets unauthorized ', async () => {
+    await api.post('/api/blogs').send(newBlogPost).expect(401);
 
-    const res = await notesInDB();
+    // const res = await notesInDB();
 
-    const authorName = res.map((el) => el.author);
-    expect(res).toHaveLength(res.length);
-    expect(authorName).toContain('unknown');
+    // const authorName = res.map((el) => el.author);
+    // expect(res).toHaveLength(res.length);
+    // expect(authorName).toContain('unknown');
   });
 
   test('exercise 4.11 creating new blog post with like to be 0 if not defined', async () => {
     const res = await api
       .post('/api/blogs')
+      .set(
+        'Authorization',
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmM2YwOGU0MmJlNTVhMjI5YTBkMGE1MCIsImlhdCI6MTU5Nzk4NDQwMn0.0sBR0HLC3K3PllURnveHxv9ArxrrH-UGxrPYxCg7d7c'
+      )
       .send(withoutLikeProperty)
+
       .expect(200)
       .expect('Content-Type', /application\/json/);
+    // console.log(res);
     expect(res.body.data.doc.likes).toBeDefined();
     expect(res.body.data.doc.likes).toBe(0);
   });
@@ -61,12 +63,17 @@ describe('Creating new Blog post for testing purpose', () => {
     const res = await api
       .post('/api/blogs')
       .send(withouttitle)
+      // always setting of header should be after send and post
+      .set(
+        'Authorization',
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmM2YwOGU0MmJlNTVhMjI5YTBkMGE1MCIsImlhdCI6MTU5Nzk4NDQwMn0.0sBR0HLC3K3PllURnveHxv9ArxrrH-UGxrPYxCg7d7c'
+      )
       .expect(400)
       .expect('Content-Type', /application\/json/);
   });
 });
 describe('Deleting and Updating Blog Post', () => {
-  test('exercise 4.13 Blog list expansions(Deletion og blog post', async () => {
+  test('exercise 4.13 && 4.22 Blog list expansions(Deletion of blog post', async () => {
     const allBlog = await notesInDB();
     if (allBlog.length > 0) {
       const id = allBlog[0].id;

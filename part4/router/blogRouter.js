@@ -14,6 +14,6 @@ router
   .route('/:id')
   .get(getSingleBlog)
   .delete(protect, deleteSingleBlog)
-  .patch(updateSinglePost);
+  .patch(protect, updateSinglePost);
 
 module.exports = router;
