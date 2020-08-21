@@ -13,6 +13,15 @@ exports.initialBlog = [
     url: 'https://bishalshah.ml/',
   },
 ];
+exports.singleUser = {
+  name: 'hello',
+  username: 'hello11',
+  password: 'newpassword',
+};
+exports.singleInvalidUser = {
+  name: 'hello',
+  password: 'newpassword',
+};
 exports.newBlogPost = {
   author: 'unknown',
   likes: 10,

@@ -7,12 +7,13 @@ const {
   deleteSingleBlog,
   updateSinglePost,
 } = require('../controller/blogController.js');
+const { protect } = require('../controller/userController');
 
-router.route('/').get(getAllBlogs).post(createNewBlog);
+router.route('/').get(getAllBlogs).post(protect, createNewBlog);
 router
   .route('/:id')
   .get(getSingleBlog)
-  .delete(deleteSingleBlog)
+  .delete(protect, deleteSingleBlog)
   .patch(updateSinglePost);
 
 module.exports = router;
