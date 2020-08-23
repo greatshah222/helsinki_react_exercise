@@ -25,7 +25,7 @@ exports.createNewBlog = async (req, res) => {
     return res.status(400).json({
       status: 'error',
       data: {
-        error: 'No documnet found',
+        error: 'Please provide all the details',
       },
     });
   }
