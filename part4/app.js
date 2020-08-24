@@ -42,7 +42,10 @@ app.use(function (req, res, next) {
 
   next();
 });
-
+if (process.env.NODE_ENV == 'test') {
+  const testingRouter = require('./router/testRouter');
+  app.use('/api/tests', testingRouter);
+}
 app.use('/api/blogs', blogRouter);
 app.use('/api/users', userRouter);
 

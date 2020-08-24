@@ -20,6 +20,14 @@ exports.createNewBlog = async (req, res) => {
 
   console.log(userID);
   // for test purpose
+  if (!userID) {
+    return res.status(400).json({
+      status: 'error',
+      data: {
+        error: 'Please login.',
+      },
+    });
+  }
 
   if (!title || !url) {
     return res.status(400).json({
@@ -105,6 +113,14 @@ exports.getSingleBlog = async (req, res) => {
   });
 };
 exports.updateSinglePost = async (req, res) => {
+  if (!req.user._id) {
+    return res.status(404).json({
+      status: 'error',
+      data: {
+        error: 'Please Login to have access',
+      },
+    });
+  }
   const doc = await Blog.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
   });

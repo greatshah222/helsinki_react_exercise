@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
 
 const User = require('../models/userModal');
-const { use } = require('express/lib/router');
 
 exports.signup = async (req, res) => {
   const { username, name, password } = req.body;
@@ -12,7 +11,15 @@ exports.signup = async (req, res) => {
     password,
     blogs: [],
   });
-  const token = jwt.sign({ id: doc._id }, process.env.JWT_SECRET);
+
+  const token = jwt.sign({ id: doc._id }, process.env.JWT_SECRET, {
+    expiresIn: '90d',
+  });
+  const cookieOptions = {
+    expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+    // secure: true,
+    httpOnly: true,
+  };
   res.cookie('jwt', token, cookieOptions);
 
   doc.password = undefined;
@@ -21,6 +28,7 @@ exports.signup = async (req, res) => {
     token,
     data: {
       doc,
+      token,
     },
   });
 };

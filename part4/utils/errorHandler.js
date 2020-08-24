@@ -2,6 +2,7 @@ const errorHandler = (error, req, res, next) => {
   // console.log(error);
 
   if (error.name === 'CastError') {
+    console.log(error);
     return res.status(400).send({ error: 'malformatted id' });
   }
   if (error.name === 'ValidationError') {
