@@ -2,20 +2,23 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import * as action from '../store/anecdote';
 import * as actionsNotification from '../store/notification';
+import { createSingleAnecdoteBackend } from '../services/blogs';
 
 function AnecdoteForm({ setshowMessageNotification }) {
   const [content, setcontent] = useState('');
   const dispatch = useDispatch();
 
-  const sumbitHandler = (e) => {
+  const sumbitHandler = async (e) => {
     e.preventDefault();
     setshowMessageNotification(false);
-    dispatch(action.createNewNote(content));
+
+    await dispatch(action.getCreateNoteInfoFromServer(content));
     dispatch(
       actionsNotification.displayNotification(
         ` ' ${content}' added successfully`
       )
     );
+
     setshowMessageNotification(true);
     setcontent('');
   };
