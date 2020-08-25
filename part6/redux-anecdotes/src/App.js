@@ -9,12 +9,16 @@ import Filter from './components/Filter';
 const App = () => {
   const [showMessageNotification, setshowMessageNotification] = useState(false);
   const notification = useSelector((state) => state.notification);
+  let timeout;
+
   if (showMessageNotification) {
-    setTimeout(() => {
+    timeout = setTimeout(() => {
       setshowMessageNotification(false);
     }, 5000);
   }
-
+  const clearTimeOutALert = () => {
+    clearTimeout(timeout);
+  };
   return (
     <>
       <h2>Anecdotes</h2>
@@ -23,8 +27,12 @@ const App = () => {
 
       <AnectodeContents
         setshowMessageNotification={setshowMessageNotification}
+        clearTimeOutALert={clearTimeOutALert}
       />
-      <AnecdoteForm setshowMessageNotification={setshowMessageNotification} />
+      <AnecdoteForm
+        setshowMessageNotification={setshowMessageNotification}
+        clearTimeOutALert={clearTimeOutALert}
+      />
     </>
   );
 };

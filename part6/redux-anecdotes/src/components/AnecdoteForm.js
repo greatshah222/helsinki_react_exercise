@@ -1,23 +1,21 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import * as action from '../store/anecdote';
 import * as actionsNotification from '../store/notification';
-import { createSingleAnecdoteBackend } from '../services/blogs';
 
-function AnecdoteForm({ setshowMessageNotification }) {
+function AnecdoteForm({
+  setshowMessageNotification,
+  displayNotify,
+  fetchData,
+}) {
   const [content, setcontent] = useState('');
-  const dispatch = useDispatch();
 
   const sumbitHandler = async (e) => {
     e.preventDefault();
     setshowMessageNotification(false);
 
-    await dispatch(action.getCreateNoteInfoFromServer(content));
-    dispatch(
-      actionsNotification.displayNotification(
-        ` ' ${content}' added successfully`
-      )
-    );
+    await fetchData(content);
+    await displayNotify(` ' ${content}' added successfully`);
 
     setshowMessageNotification(true);
     setcontent('');
@@ -39,4 +37,17 @@ function AnecdoteForm({ setshowMessageNotification }) {
   );
 }
 
-export default AnecdoteForm;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchData: (content) =>
+      dispatch(action.getCreateNoteInfoFromServer(content)),
+    displayNotify: (content) =>
+      dispatch(
+        actionsNotification.displayNotification(
+          ` ' ${content}' added successfully`
+        )
+      ),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(AnecdoteForm);

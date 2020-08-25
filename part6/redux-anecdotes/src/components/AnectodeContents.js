@@ -1,34 +1,41 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, connect } from 'react-redux';
 import * as actions from '../store/anecdote';
 import * as actionsNotification from '../store/notification';
 import { useEffect } from 'react';
 import { getAll } from '../services/blogs';
 
-function AnectodeContents({ setshowMessageNotification }) {
+function AnectodeContents({
+  setshowMessageNotification,
+  clearTimeOutALert,
+  anecdotes,
+  filterValue,
+  fetchBlogPost,
+  displayNotify,
+  updateBlogPost,
+}) {
   // since we have only one object we are taking the whole state in the
-  const anecdotes = useSelector((state) => state.anecdote);
-  const filterValue = useSelector((state) => state.filterValue);
+  // const anecdotes = useSelector((state) => state.anecdote);
+  // const filterValue = useSelector((state) => state.filterValue);
 
-  const dispatch = useDispatch();
-  console.log(anecdotes);
+  // const dispatch = useDispatch();
+  // console.log(anecdotes);
   useEffect(() => {
-    let fetchBlogPost;
-    fetchBlogPost = async () => {
-      await dispatch(actions.fetchBlogPostFromServer());
+    let fetchBlog;
+    fetchBlog = async () => {
+      await fetchBlogPost();
     };
-    fetchBlogPost();
-  }, [dispatch]);
+    fetchBlog();
+  }, []);
 
-  const vote = (id, content) => {
+  const vote = async (id, content) => {
+    clearTimeOutALert();
     setshowMessageNotification(false);
 
     console.log(id);
+    await updateBlogPost(id);
 
-    dispatch(actions.updateNoteInfoToServer(id));
-    dispatch(
-      actionsNotification.displayNotification(` you voted for ' ${content}'`)
-    );
+    await displayNotify(` you voted for ' ${content}'`);
     setshowMessageNotification(true);
   };
   console.log(anecdotes);
@@ -76,4 +83,21 @@ function AnectodeContents({ setshowMessageNotification }) {
   }
 }
 
-export default AnectodeContents;
+const mapStateToProps = (state) => {
+  return {
+    anecdotes: state.anecdote,
+    filterValue: state.filterValue,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchBlogPost: () => dispatch(actions.fetchBlogPostFromServer()),
+    updateBlogPost: (id) => dispatch(actions.updateNoteInfoToServer(id)),
+    displayNotify: (content) =>
+      dispatch(
+        actionsNotification.displayNotification(` you voted for ' ${content}'`)
+      ),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AnectodeContents);
