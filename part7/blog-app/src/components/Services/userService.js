@@ -14,6 +14,27 @@ export const login = async (data) => {
     throw error.response.data.error;
   }
 };
+
+export const getAllUsers = async () => {
+  try {
+    const res = await axios.get(baseUrl);
+    console.log(res);
+    return res.data.data.doc;
+  } catch (error) {
+    throw error.response.data.error;
+  }
+};
+export const getSingleUsers = async (id) => {
+  try {
+    const res = await axios.get(`${baseUrl}/${id}`);
+    console.log(res);
+    return res.data.data.doc;
+  } catch (error) {
+    console.log(error);
+
+    throw error.response.data.error;
+  }
+};
 // always give withCredential is true when fetching the cookie
 export const fetchTokenCookie = async () => {
   try {

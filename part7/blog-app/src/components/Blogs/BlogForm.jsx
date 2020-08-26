@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch } from 'react-redux';
 import * as actions from '../../store/actions/index';
+import classes from './BlogForm.module.css';
 function BlogForm({ toggleFormHandler, setShowForm }) {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
@@ -32,49 +33,50 @@ function BlogForm({ toggleFormHandler, setShowForm }) {
     }
   };
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        marginBottom: '2rem',
-        flexDirection: 'column',
-        minHeight: '40vh',
-      }}
-    >
-      <h2>Create New Blog</h2>
+    <div className={classes.secondaryContainer}>
+      <h2 style={{ textAlign: 'center' }}>Create New Blog</h2>
       <form onSubmit={createNewBlogHandler} className='form'>
-        <div style={{ marginBottom: '1rem' }}>
-          title
-          <input
-            className='title'
-            type='text'
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
+        <div className={classes.PrimaryContainer}>
+          <div className={classes.TertiaryContainer}>
+            <div className={classes.label}>title</div>
+            <input
+              className='title'
+              type='text'
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </div>
+          <div className={classes.TertiaryContainer}>
+            <div className={classes.label}>author</div>
+            <input
+              className='author'
+              type='text'
+              value={author}
+              onChange={(e) => setAuthor(e.target.value)}
+            />
+          </div>
+          <div className={classes.TertiaryContainer}>
+            <div className={classes.label}>url</div>
+            <input
+              // className is just for testing
+              className='url'
+              type='text'
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+            />
+          </div>
         </div>
-        <div style={{ marginBottom: '1rem' }}>
-          author
-          <input
-            className='author'
-            type='text'
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-          />
+        <div className={classes.ButtonPrimary}>
+          <button
+            id='createNewBlog'
+            type='submit'
+            className={classes.ButtonCreate}
+          >
+            Create New Blog
+          </button>
+          <button onClick={toggleFormHandler}>Cancel</button>
         </div>
-        <div style={{ marginBottom: '1rem' }}>
-          url
-          <input
-            // className is just for testing
-            className='url'
-            type='text'
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-          />
-        </div>
-        <button id='createNewBlog'>Create New Blog</button>
       </form>
-      <button onClick={toggleFormHandler}>Cancel</button>
     </div>
   );
 }

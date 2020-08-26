@@ -24,8 +24,13 @@ const Login = () => {
   return (
     <div>
       <ToastContainer />
-      <h2>Log in to the application</h2>
-      <form onSubmit={loginHandler}>
+      <h2 style={{ textAlign: 'center', marginTop: '50px' }}>
+        Log in to the application
+      </h2>
+      <form
+        onSubmit={loginHandler}
+        style={{ width: '50%', margin: '50px auto' }}
+      >
         <div>
           username{' '}
           <input
@@ -48,7 +53,14 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button id='loginButton'>Log in </button>
+        <button
+          id='loginButton'
+          style={{
+            padding: '0.6rem 2rem',
+          }}
+        >
+          Log in{' '}
+        </button>
       </form>
     </div>
   );

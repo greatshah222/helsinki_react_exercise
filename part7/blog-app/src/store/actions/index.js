@@ -1,4 +1,10 @@
-export { getCookieInfo, loginUser, logoutUserStart } from './auth';
+export {
+  getCookieInfo,
+  loginUser,
+  logoutUserStart,
+  fetchAllUserStart,
+  fetchSingleUserStart,
+} from './auth';
 export {
   initializeBlogPostFrombackend,
   createNewBlogPost,

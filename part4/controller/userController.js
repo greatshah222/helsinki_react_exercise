@@ -133,6 +133,22 @@ exports.getAllUser = async (req, res) => {
     },
   });
 };
+exports.getOneUser = async (req, res) => {
+  const doc = await User.findById(req.params.id).populate('blogs');
+  if (!doc) {
+    return res.status(400).json({
+      error:
+        'No Document found.Please check your data again or try reloading the page.',
+    });
+  }
+  res.status(200).json({
+    status: 'succes',
+
+    data: {
+      doc,
+    },
+  });
+};
 
 exports.logout = (req, res) => {
   res.cookie('jwt', 'loggedout', {

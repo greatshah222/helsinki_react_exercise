@@ -1,10 +1,9 @@
 const Blog = require('../models/blogModal');
 const User = require('../models/userModal');
-const { use } = require('express/lib/router');
 // dont need to handle try -catch it is auto done by npm package require('express-async-errors');
 
 exports.getAllBlogs = async (req, res) => {
-  const doc = await Blog.find().populate('user');
+  const doc = await Blog.find().populate('user').populate('comment');
   res.status(200).json({
     status: 'success',
     data: {

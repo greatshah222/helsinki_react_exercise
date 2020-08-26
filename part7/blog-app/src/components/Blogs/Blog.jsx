@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import * as actions from '../../store/actions/index';
 import { useDispatch } from 'react-redux';
+import classes from './Blogs.module.css';
 
 function Blog({ blog, blogs, userID }) {
   const dispatch = useDispatch();
@@ -13,11 +14,10 @@ function Blog({ blog, blogs, userID }) {
     await dispatch(actions.blogDetailhandler(id));
   };
   let ownerOfBlog;
-  console.log(blog);
-  if (userID === blog.blogInformation.user._id) {
+  // we have to check blog.bloginformation.user cause during the create method we get the response and in that response the users have not been populated yet
+  if (userID === blog.blogInformation.user || blog.blogInformation.user._id) {
     ownerOfBlog = true;
   }
-  console.log(userID, blog.blogInformation.user._id);
 
   const likeUpdateHandler = async (id) => {
     try {
@@ -46,82 +46,70 @@ function Blog({ blog, blogs, userID }) {
   };
 
   const deleteBlogHandler = async (id, title) => {
-    console.log(id);
     const confirm = window.confirm(
       ` Do you really want to delete ${title}? .This process cannot be undone !!!`
     );
     try {
       if (confirm) {
-        console.log(id);
         await dispatch(actions.deleteBlogPost(id));
         toast.success(`Deleted ${title} successfully`);
       }
     } catch (error) {
       console.log(error);
-      toast.error(`error ${title} successfully`);
+      toast.error(`error ${title} `);
     }
   };
   let content;
   if (!blog.showDetail && blog) {
     content = (
-      <div
-        style={{
-          minHeight: '20vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginBottom: '3rem',
-          boxShadow: ' 1px 1px black, -1em 0 .4em black',
-        }}
-      >
+      <div className={classes.SecondaryContainer}>
         <p>
           <strong>title: </strong>
           {blog.blogInformation.title}
         </p>
-        <button
-          className='showDetail'
-          style={{
-            marginLeft: '20px',
-            backgroundColor: 'green',
-            color: 'white',
-            padding: '0.5rem',
-          }}
-          onClick={() => blogDetailHandler(blog.blogInformation.id)}
-        >
-          Show Details
-        </button>
-        {ownerOfBlog && (
+        <div className={classes.ButtonPrimary}>
           <button
-            onClick={() =>
-              deleteBlogHandler(
-                blog.blogInformation.id,
-                blog.blogInformation.title
-              )
-            }
+            className='showDetail'
             style={{
               marginLeft: '20px',
-              backgroundColor: 'red',
+              backgroundColor: 'rgba(163, 152, 152, 0.658)',
+              borderRadius: '15px',
               color: 'white',
-              padding: '0.5rem',
+              padding: '0.8rem 1rem',
+              cursor: 'pointer',
             }}
+            onClick={() => blogDetailHandler(blog.blogInformation.id)}
           >
-            Delete
+            Show Details
           </button>
-        )}
+          {ownerOfBlog && (
+            <button
+              onClick={() =>
+                deleteBlogHandler(
+                  blog.blogInformation.id,
+                  blog.blogInformation.title
+                )
+              }
+              style={{
+                marginLeft: '20px',
+                backgroundColor: 'red',
+                borderRadius: '15px',
+                color: 'white',
+                padding: '0.8rem 1rem',
+                cursor: 'pointer',
+              }}
+            >
+              Delete
+            </button>
+          )}
+        </div>
       </div>
     );
   }
   if (blog.showDetail && blog) {
     content = (
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          flexDirection: 'column',
-          marginBottom: '3rem',
-        }}
-      >
-        <p>
+      <div className={classes.SecondaryContainer}>
+        <p className={classes.showDetailTitle}>
           <strong>title: </strong>
           {blog.blogInformation.title}
         </p>
@@ -137,6 +125,7 @@ function Blog({ blog, blogs, userID }) {
           <strong>likes: </strong>
           {blog.blogInformation.likes}{' '}
           <button
+            className={classes.likeButton}
             id='likeButton'
             onClick={() => likeUpdateHandler(blog.blogInformation.id)}
           >
@@ -147,9 +136,11 @@ function Blog({ blog, blogs, userID }) {
           <button
             style={{
               marginLeft: '20px',
-              backgroundColor: 'green',
+              backgroundColor: 'rgba(163, 152, 152, 0.658)',
+              borderRadius: '15px',
               color: 'white',
-              padding: '0.5rem',
+              padding: '0.8rem 1rem',
+              cursor: 'pointer',
             }}
             onClick={() => blogDetailHandler(blog.blogInformation.id)}
           >
@@ -166,8 +157,10 @@ function Blog({ blog, blogs, userID }) {
               style={{
                 marginLeft: '20px',
                 backgroundColor: 'red',
+                borderRadius: '15px',
                 color: 'white',
-                padding: '0.5rem',
+                padding: '0.8rem 1rem',
+                cursor: 'pointer',
               }}
             >
               Delete

@@ -4,6 +4,8 @@ const initialState = {
   token: null,
   error: null,
   cookieFetch: false,
+  users: [],
+  singleUser: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -27,6 +29,18 @@ const reducer = (state = initialState, action) => {
         ...state,
         token: null,
         user: null,
+      };
+    case actionTypes.FETCH_ALL_USER:
+      console.log(action.payload);
+      return {
+        ...state,
+        users: action.payload,
+      };
+    case actionTypes.FETCH_SINGLE_USER:
+      console.log(action.payload);
+      return {
+        ...state,
+        singleUser: action.payload,
       };
 
     default:

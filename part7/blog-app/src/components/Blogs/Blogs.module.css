@@ -1,0 +1,58 @@
+.MainContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 500px));
+  grid-gap: 40px;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  margin: 20px auto;
+}
+.heading {
+  text-align: center;
+  font-size: 2rem;
+  margin: 40px;
+}
+.heading::after {
+  height: 4px;
+  display: block;
+  content: '';
+  width: 100px;
+  background-color: black;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.SecondaryContainer {
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: black;
+  color: white;
+  border-radius: 15px;
+}
+.SecondaryContainer > * {
+  margin-bottom: 2rem;
+}
+.ButtonPrimary {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.likeButton {
+  margin-left: 20px;
+  background-color: rgba(5, 255, 5, 0.626);
+  border-radius: 15px;
+  color: white;
+  padding: 0.5rem 2rem;
+  cursor: pointer;
+}
+
+.likeButton:hover {
+  background-color: rgba(5, 255, 5, 0.788);
+}
+.showDetailTitle {
+  padding-top: 50px;
+}

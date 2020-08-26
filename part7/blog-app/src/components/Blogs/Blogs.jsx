@@ -5,6 +5,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import BlogForm from './BlogForm';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../store/actions/index';
+import classes from './Blogs.module.css';
+import { IoIosCreate } from 'react-icons/io';
 
 function Blogs({ user, logout }) {
   const [showForm, setShowForm] = useState(false);
@@ -15,7 +17,6 @@ function Blogs({ user, logout }) {
   useEffect(() => {
     dispatch(actions.initializeBlogPostFrombackend());
   }, [dispatch]);
-  console.log(user);
 
   const toggleFormHandler = () => {
     setShowForm((prevState) => !prevState);
@@ -24,50 +25,35 @@ function Blogs({ user, logout }) {
   return (
     <>
       <ToastContainer />
-
-      <h2> Blogs</h2>
       <div
         style={{
           display: 'flex',
-          justifyContent: 'space-evenly',
           alignItems: 'center',
         }}
       >
-        <h4>{user.name} is logged in </h4>{' '}
-        <button onClick={logout}>Logout</button>
+        <h2 className={classes.heading} style={{ flex: 4 }}>
+          {' '}
+          Blogs
+        </h2>
+        {!showForm && (
+          <div>
+            {' '}
+            <button
+              style={{
+                fontSize: '3rem',
+                border: 'none',
+                padding: ' 0.5rem 1rem',
+                cursor: 'pointer',
+                marginRight: '100px  ',
+              }}
+              onClick={toggleFormHandler}
+            >
+              <IoIosCreate color='green' />
+            </button>
+          </div>
+        )}
       </div>
 
-      {blogs &&
-        blogs.map((el) => (
-          <Blog
-            blog={el}
-            key={el.blogInformation.id}
-            blogs={blogs}
-            userID={user._id}
-          />
-        ))}
-      {!showForm && (
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom: '2rem',
-          }}
-        >
-          {' '}
-          <button
-            style={{
-              fontSize: '2rem',
-              backgroundColor: 'black',
-              color: 'white',
-            }}
-            onClick={toggleFormHandler}
-          >
-            Add New Blog Post
-          </button>
-        </div>
-      )}
       {showForm && (
         <BlogForm
           toggleFormHandler={toggleFormHandler}
@@ -75,6 +61,17 @@ function Blogs({ user, logout }) {
           blogs={blogs}
         />
       )}
+      <div className={classes.MainContainer}>
+        {blogs &&
+          blogs.map((el) => (
+            <Blog
+              blog={el}
+              key={el.blogInformation.id}
+              blogs={blogs}
+              userID={user._id}
+            />
+          ))}
+      </div>
     </>
   );
 }

@@ -2,6 +2,8 @@ import {
   fetchTokenCookie,
   login,
   logoutBackend,
+  getAllUsers,
+  getSingleUsers,
 } from '../../components/Services/userService';
 import * as actionTypes from '../actions/actionTypes';
 
@@ -48,5 +50,41 @@ export const logoutUserStart = () => {
 export const logoutUser = () => {
   return {
     type: actionTypes.USER_LOGOUT,
+  };
+};
+
+export const fetchAllUser = (payload) => {
+  return {
+    type: actionTypes.FETCH_ALL_USER,
+    payload,
+  };
+};
+export const fetchSingleUser = (payload) => {
+  return {
+    type: actionTypes.FETCH_SINGLE_USER,
+    payload,
+  };
+};
+export const fetchSingleUserStart = (id) => {
+  return async (dispatch) => {
+    try {
+      const res = await getSingleUsers(id);
+      console.log(res);
+      await dispatch(fetchSingleUser(res));
+    } catch (error) {
+      await dispatch(loginFailed(error));
+    }
+  };
+};
+
+export const fetchAllUserStart = () => {
+  return async (dispatch) => {
+    try {
+      const res = await getAllUsers();
+      console.log(res);
+      await dispatch(fetchAllUser(res));
+    } catch (error) {
+      await dispatch(loginFailed(error));
+    }
   };
 };
