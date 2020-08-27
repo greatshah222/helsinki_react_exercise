@@ -75,6 +75,56 @@ let books = [
     genres: ['classic', 'revolution'],
   },
 ];
+// let info = [];
+// const s = books.reduce((acc, cur) => {
+//   acc[cur.author] = (acc[cur.author] || 0) + 1;
+//   console.log(cur);
 
-console.log(bookfo);
-console.log(s);
+//   console.log(acc[cur.author]);
+
+//   info.push(
+//     (acc = {
+//       name: cur.author,
+//       bookCount: acc[cur.author],
+//     })
+//   );
+//   console.log(info);
+//   console.log(
+//     (acc = {
+//       name: cur.author,
+//       bookCount: acc[cur.author],
+//     })
+//   );
+//   return acc;
+// }, []);
+// console.log(info);
+// let bookfo = [];
+// Object.keys(s).forEach((el) => {
+//   bookfo.push({
+//     name: el,
+//     bookCount: s[el],
+//   });
+// });
+
+// console.log(s);
+
+const allAuthors = () => {
+  const bookWithSameAuthor = authors.map((el) =>
+    books.filter((el1) => el1.author === el.name)
+  );
+  console.log(bookWithSameAuthor);
+  return bookWithSameAuthor.map((item) => {
+    let author = authors.find((author) => item[0].author === author.name);
+    if (author.born) {
+      author = {
+        bookCount: item.length,
+        name: item[0].author,
+        born: author.born,
+      };
+    } else {
+      author = { bookCount: item.length, name: item[0].author };
+    }
+    return author;
+  });
+};
+console.log(allAuthors());

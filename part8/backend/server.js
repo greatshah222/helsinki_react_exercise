@@ -1,4 +1,6 @@
 const { ApolloServer, gql } = require('apollo-server');
+const { uuid } = require('uuidv4');
+
 let authors = [
   {
     name: 'Robert Martin',
@@ -98,7 +100,17 @@ const typeDefs = gql`
     allAuthors: [Author!]!
     findAuthor(name: String!): Author
     bookCount: Int!
-    allBooks: [Book!]!
+    allBooks(author: String, genre: String): [Book!]!
+  }
+  type Mutation {
+    addBook(
+      title: String!
+      published: Int!
+      author: String!
+      genres: [String]!
+    ): Book
+
+    editAuthor(name: String!, setBornTo: Int!): Author
   }
 `;
 
@@ -106,25 +118,80 @@ const resolvers = {
   Query: {
     authorCount: () => authors.length,
     bookCount: () => books.length,
-    allBooks: () => {
-      return books;
+    allBooks: (root, args) => {
+      if (!args.author && !args.genre) return books;
+      if (args.author && args.genre) {
+        return books
+
+          .filter((el1) => el1.genres.includes(args.genre))
+          .filter((el) => el.author === args.author);
+      }
+      if (args.author) {
+        return books.filter((el) => el.author === args.author);
+      }
+      if (args.genre) {
+        return books.filter((el) => el.genres.includes(args.genre));
+      }
     },
     allAuthors: () => {
+      // s make the our array like this(name of author and number of books by that author)   Bishal:2, banana:3,chicken:4
       const s = books.reduce((acc, cur) => {
         acc[cur.author] = (acc[cur.author] || 0) + 1;
         return acc;
       }, {});
       let bookfo = [];
       Object.keys(s).forEach((el) => {
-        bookfo.push({
-          name: el,
-          bookCount: s[el],
-        });
+        // first we find that author in the authors array and then check if it has born if it has we assign the born else it will be empty
+        const authorBornyear = authors.find((el1) => el1.name == el);
+        if (authorBornyear.born) {
+          bookfo.push({
+            name: el,
+            bookCount: s[el],
+            born: authorBornyear.born,
+          });
+        } else {
+          bookfo.push({
+            name: el,
+            bookCount: s[el],
+          });
+        }
       });
-      console.log(bookfo);
       return bookfo;
     },
     findAuthor: (root, args) => authors.find((el) => el.name === args.name),
+  },
+  Mutation: {
+    addBook: (root, args) => {
+      const { author } = args;
+      const authorCheck = authors.some((el) => el.name === author);
+      if (!authorCheck) {
+        const newAuhtor = { name: author, id: uuid(), bookCount: 1 };
+        authors = [...authors, newAuhtor];
+        console.log(authors);
+      }
+      const book = { ...args, id: uuid() };
+      books = [...books, book];
+      console.log(books);
+      return book;
+    },
+    editAuthor: (root, args) => {
+      const { name, setBornTo } = args;
+      const user = authors.find((el) => el.name === name);
+      console.log(user);
+      if (!user) return null;
+      const updatedUser = user;
+      const updatedAuthor = [...authors];
+
+      const index = updatedAuthor.indexOf(updatedUser);
+      console.log(index);
+
+      updatedUser.born = setBornTo;
+      updatedAuthor[index] = updatedUser;
+      authors = updatedAuthor;
+      // console.log(updatedUser);
+      console.log(authors);
+      return updatedUser;
+    },
   },
 };
 
@@ -132,7 +199,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
 });
-
-server.listen().then(({ url }) => {
-  console.log(`server running at ${url} `);
+const port = 4870;
+server.listen({ port }).then(({ url }) => {
+  console.log(`🚀  Server ready at ${url}`);
 });
