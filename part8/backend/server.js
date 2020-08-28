@@ -5,7 +5,6 @@ const {
   AuthenticationError,
 } = require('apollo-server');
 
-const { uuid } = require('uuidv4');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 dotenv.config({ path: './config.env' });
@@ -124,7 +123,9 @@ const resolvers = {
         return books;
       }
       if (args.genre) {
-        const books = await Book.find({ genres: { $in: args.genre } });
+        const books = await Book.find({ genres: { $in: args.genre } }).populate(
+          'author'
+        );
         return books;
         // return books.filter((el) => el.genres.includes(args.genre));
       }
@@ -192,8 +193,8 @@ const resolvers = {
       return bookByAuthor;
     },
     findAuthor: async (root, args) => await Author.findOne({ name: args.name }),
-    me: (root, args) => {
-      console.log({ context });
+    // for favgenre
+    me: (root, args, context) => {
       return context.currentUser;
     },
   },
