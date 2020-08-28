@@ -19,7 +19,8 @@ const NewBook = (props) => {
       refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
       // for catching error
       onError: (error) => {
-        // setError(error.graphQLErrors[0]);
+        console.log(error.graphQLErrors[0].message);
+        setErrorMessage(error.graphQLErrors[0].message);
       },
     }
   );
@@ -29,29 +30,34 @@ const NewBook = (props) => {
   }
 
   const submit = async (event) => {
-    setErrorMessage(null);
-    event.preventDefault();
+    try {
+      setErrorMessage(null);
+      event.preventDefault();
 
-    console.log('add book...');
-    await createNewBook({
-      variables: { title, author, published, genres },
-    });
+      console.log('add book...');
+      await createNewBook({
+        variables: { title, author, published, genres },
+      });
 
-    setTitle('');
-    setPublished('');
-    setAuhtor('');
-    setGenres([]);
-    setGenre('');
-    toast.success('added new book');
+      setTitle('');
+      setPublished('');
+      setAuhtor('');
+      setGenres([]);
+      setGenre('');
+      toast.success('added new book');
+    } catch (error) {
+      console.log(error);
+      toast.error(error);
+    }
   };
 
   const addGenre = () => {
     setGenres(genres.concat(genre));
     setGenre('');
   };
-
   return (
     <div>
+      {errorMessage && toast.error(errorMessage)}
       <ToastContainer />
       <form onSubmit={submit}>
         <div>
