@@ -217,7 +217,9 @@ const resolvers = {
             author: author._id,
           });
         }
+        book = await book.populate('author');
         console.log(book);
+
         return book;
       } catch (error) {
         throw new UserInputError(error.message, {
@@ -274,7 +276,8 @@ const resolvers = {
         username: user.username,
         id: user._id,
       };
-      return { value: await jwt.sign(token, 'thisissecret') };
+      console.log(token);
+      return { value: jwt.sign(token, 'thisissecret') };
     },
   },
 };
@@ -285,7 +288,7 @@ const server = new ApolloServer({
   context: async ({ req }) => {
     const auth = req ? req.headers.authorization : null;
     if (auth && auth.toLowerCase().startsWith('bearer ')) {
-      const decodedToken = jwt.verify(auth.substring(7), JWT_SECRET);
+      const decodedToken = jwt.verify(auth.substring(7), 'thisissecret');
       const currentUser = await User.findById(decodedToken.id).populate(
         'friends'
       );
