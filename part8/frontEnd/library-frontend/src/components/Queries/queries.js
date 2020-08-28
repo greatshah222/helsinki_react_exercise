@@ -1,5 +1,34 @@
 import { gql } from '@apollo/client';
 
+// const BOOK_DETAILS = gql`
+//   fragment bookDetails on Book {
+//     title
+//     published
+//     genres
+//     id
+//     author {
+//       name
+//       born
+//       id
+//     }
+//   }
+// `;
+// export const BOOK_ADDED = gql`
+//   subscription {
+//     bookAdded {
+//       title
+//       author {
+//         name
+//         bookCount
+//         born
+//       }
+//       published
+//       genres
+//       id
+//     }
+//   }
+// `;
+
 export const ALL_AUTHORS = gql`
   query {
     allAuthors {
@@ -37,13 +66,26 @@ export const ADD_NEW_BOOK = gql`
       genres: $genres
     ) {
       title
-
       published
       genres
     }
   }
 `;
-
+export const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
+      title
+      published
+      genres
+      id
+      author {
+        name
+        bookCount
+        born
+      }
+    }
+  }
+`;
 export const UPDATE_AUTHOR_DETAILS = gql`
   mutation updateAuthor($name: String!, $setBornTo: Int!) {
     #   name is editAuthor in server

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
-import Authors from './Authors';
 import { ALL_BOOKS } from './Queries/queries';
 
 const Books = (props) => {
@@ -13,7 +12,7 @@ const Books = (props) => {
     if (books.data) {
       setBookDataForfilter(books.data.allBooks);
     }
-  });
+  }, [books.data]);
   if (!props.show) {
     return null;
   }
@@ -42,6 +41,7 @@ const Books = (props) => {
           justifyContent: 'space-evenly',
           marginBottom: '40px',
           alignItems: 'centers',
+          flexWrap: 'wrap',
         }}
       >
         {uniqueGenres.map((el) => (
@@ -50,6 +50,7 @@ const Books = (props) => {
             style={{
               background: 'grey',
               padding: '10px 30px',
+              marginBottom: '20px',
               color: 'white',
               textTransform: 'uppercase',
             }}

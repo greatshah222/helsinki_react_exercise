@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import Authors from './Authors';
-import { ADD_NEW_BOOK, ALL_BOOKS, ALL_AUTHORS } from './Queries/queries';
+import { ADD_NEW_BOOK, ALL_AUTHORS } from './Queries/queries';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-const NewBook = (props) => {
+const NewBook = ({ show, updateCacheWith }) => {
   const [title, setTitle] = useState('');
   const [author, setAuhtor] = useState('');
   const [published, setPublished] = useState('');
@@ -16,16 +15,18 @@ const NewBook = (props) => {
     ADD_NEW_BOOK,
     // after the person is created we are refetching the queries
     {
-      refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
-      // for catching error
+      refetchQueries: [{ query: ALL_AUTHORS }],
+      update: (store, response) => {
+        updateCacheWith(response.data.addBook);
+      },
       onError: (error) => {
-        console.log(error.graphQLErrors[0].message);
         setErrorMessage(error.graphQLErrors[0].message);
+        console.log(error.graphQLErrors[0].message);
       },
     }
   );
 
-  if (!props.show) {
+  if (!show) {
     return null;
   }
 
